@@ -53,14 +53,14 @@ module.exports = {
       }); //finds user looking at id
 
       if (!deleteUser) {
-        return res.status(404).json({ message: "User with the id not found" });
+        return res.status(404).json({ message: "User with this id not found" });
       }
       res.json(deleteUser);
     } catch (error) {
       res.status(500).json(error);
     }
   },
-  //add friend. Can we have a function with two methods?
+
   async addFriend(req, res) {
     console.log('You are adding a friend');
     console.log(req.body);
@@ -71,13 +71,28 @@ module.exports = {
         { runValidators: true, new: true }
       );
       if (!addFriend) {
-        return res.status(404).json({ message: 'User not found.' });
+        return res.status(404).json({ message: 'User with this id not found' });
       }
       res.json(addFriend);
     } catch (error) {
       res.status(500).json(error);
     }
   },
-  //delete friend
-  async deleteFriend(req, res) {},
+ 
+  async deleteFriend(req, res) {
+    try {
+      const deleteFriend = await User.findOneAndUpdate(
+        {_id: req.params.userId},
+        {$pull: {friends: req.params.friendId}},
+        { runValidators: true, new: true}
+      );
+
+      if (!deleteFriend) {
+        return res.status(404).json({message: 'User with this id not found'})
+      }
+      res.json(deleteFriend)
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  },
 };

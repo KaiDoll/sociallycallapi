@@ -18,11 +18,12 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      timestamps: true
+     //use the get for timestamps 
     },
   },
   {
     toJSON: {
+      virtuals: true,
       getters: true, //check this 
     },
     id: false,
@@ -40,7 +41,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date, 
       default: Date.now,
-      timestamps: true
+      //use the get method
     },
     username: {
       type: String,
@@ -51,15 +52,16 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
+      getters: true, //Why do we use this? 
     },
     id: false,
   }
 );
 
 thoughtSchema.virtual('reactionCount').get(function () {
-  return this.reactions;
+  return this.reactions.length;
 })
-const Thought = model('Thought', userSchema);
 
-module.exports = reactionSchema;
-module.exports = thoughtSchema;
+const Thought = model('Thought', thoughtSchema);
+
+module.exports = Thought;
