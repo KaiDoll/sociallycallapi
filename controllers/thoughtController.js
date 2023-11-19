@@ -36,9 +36,34 @@ async getSingleThought(req,res) {
     }
   },
   //update thought by its id
+async updateThought(req, res) {
+  try {
+    const updateThought = await Thought.findOneAndUpdate(
+      {_id: req.params.thoughtId},
+      {$set: req.body},
+      {runValidators: true, new: true}
+    )
 
+    if(!updateThought) {
+      return res.status(404).json({message: 'The id does not exist'})
+    };
+    res.json(updateThought)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+},
   //delete thought by its id
-
+async deleteThought (req, res) { //Need to check on this~
+  try {
+    const deleteThought = await Thought.findOneAndDelete({_id:req.params.thoughtId});
+    if(!deleteThought) {
+      return res.status(404).json({message: 'The id does not exist'})
+    };
+    res.json(deleteThought)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
   //post reaction
 
   //delete reaction
