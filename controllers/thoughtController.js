@@ -11,7 +11,15 @@ module.exports = {
     }
   },
   //get single thought by its id
-
+async getSingleThought(req,res) {
+  try {
+    const getSingleThought = await Thought.findOne({_id: req.params.thoughtId})
+    res.json(getSingleThought)
+  } catch (error) {
+    res.status(500).json(error)
+    
+  }
+},
   //create new thought id look at the example
   async newThought(req, res) {
     try {
