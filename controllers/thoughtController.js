@@ -71,10 +71,27 @@ async createReaction(req,res) {
       {_id: req.params.thoughtId},
       {$addToSet: {reactions: req.body}},
       {runValidators: true, new:true})
+      if(!createReaction) {
+        return res.status(404).json({message: 'The id does not exist'})
+      }
       res.json(createReaction)
   } catch (error) {
     res.status(500).json(error)
   }
+},
+async deleteReaction(req,res) { 
+  try {
+    const deleteReaction = await Thought.findOneAndUpdate(
+      {_id: req.params.thoughtId},
+      {$pull: {reactions: { reactionId: req.params.reactionId}}}, //nested because it is an object within an object. 
+      {runValidators:true, new:true})
+      console.log(deleteReaction)
+      if(!deleteReaction) {
+        return res.status(404).json({message: 'The id does not exist'})
+      }
+      res.json(deleteReaction);
+  } catch (error) {
+    res.status(500).json(error)
+  }
 }
-  //delete reaction
 };
