@@ -63,8 +63,18 @@ async deleteThought (req, res) { //Need to check on this~
   } catch (error) {
     res.status(500).json(error)
   }
-}
+},
   //post reaction
-
+async createReaction(req,res) {
+  try {
+    const createReaction = await Thought.findOneAndUpdate(
+      {_id: req.params.thoughtId},
+      {$addToSet: {reactions: req.body}},
+      {runValidators: true, new:true})
+      res.json(createReaction)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
   //delete reaction
 };
