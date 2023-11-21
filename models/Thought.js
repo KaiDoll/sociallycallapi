@@ -18,9 +18,9 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: function () {
-        return this.createdAt.toLocaleString(); //returns local timestamps formatted.
-      },
+      get: function (reaction) {
+        return reaction.toLocaleString(); 
+      },//returns local timestamps formatted.
     },
   },
   {
@@ -31,10 +31,6 @@ const reactionSchema = new Schema(
     id: false,
   }
 );
-
-// reactionSchema.get(function () {
-//   return `createdAt: ${this.createdAt.toLocaleString()}`;
-// });
 
 const thoughtSchema = new Schema(
   {
@@ -47,8 +43,8 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: function () {
-        return this.createdAt.toLocaleString();
+      get: function (time) {
+        return time.toLocaleString();
       },
     },
     username: {
@@ -60,7 +56,7 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
-      getters: true, //Why do we use this?
+      getters: true, 
     },
     id: false,
   }
